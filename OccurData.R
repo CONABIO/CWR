@@ -2,10 +2,17 @@
 library(spocc)
 Capspp <- c('Capsicum annuum glabriusculum', 'Capsicum frutescens', 'Capsicum lanceolatum', 'Capsicum rhomboideum')
 dat<-occ(query = Capspp, from = 'gbif', has_coords = TRUE, limit = 50)
-occ2df(dat)
-map_leaflet(dat)
+Capspp_xy<-occ2df(dat) #Combina resultados de occ en un solo data.frame
+#Crear mapa
+library(mapr)
+map_leaflet(Capspp_xy) 
 
-#Otra forma de bajar ocurrencias usando dismo y maptools, adaptado de: http://www.molecularecologist.com/2016/03/using-r-to-mine-species-data/
+#Write data to csv
+write.csv(Capspp_xy,'CapsppGbif28_09_2016.csv', row.names = FALSE)
+#Write data to txt
+write.table(Capspp_xy,"CapsppGbif28_09_2016.txt", sep = "\t")
+
+#Otra forma de bajar ocurrencias y crear mapa usando dismo y maptools, adaptado de: http://www.molecularecologist.com/2016/03/using-r-to-mine-species-data/
 library(dismo)
 library(maptools)
 Capann<-gbif("Capsicum", "annuum", geo=T, removeZeros=T, args='continent=NORTH_AMERICA') #retrieve all occurrences of Capsicum annuum from North America, from Canada to Panama
